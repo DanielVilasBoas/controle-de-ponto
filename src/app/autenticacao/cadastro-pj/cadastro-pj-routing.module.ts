@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
-import { CadastroPjComponent } from './cadastro-pj.component';
-import { CadastrarPjComponent } from './cadastrar-pj/cadastrar-pj.component';
+import { CadastroPjComponent } from './components/cadastro-pj.component';
+import { CadastrarPjComponent } from './components/cadastrar-pj/cadastrar-pj.component';
 import { compileNgModule } from '@angular/compiler';
 import { NgModule } from '@angular/core';
 
