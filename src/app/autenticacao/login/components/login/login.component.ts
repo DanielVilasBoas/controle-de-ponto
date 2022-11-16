@@ -10,7 +10,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 })
 export class LoginComponent implements OnInit {
 
-  form: FormGroup
+  form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -24,7 +24,17 @@ export class LoginComponent implements OnInit {
 
   gerarForm() {
     this.form = this.fb.group({
-
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]]
     })
+  }
+
+  logar() {
+    if (this.form.invalid) {
+      this.snackBar.open(
+        "Dados inválidos", "Erro", { duration: 5000 });
+        return;
+    }
+    alert(JSON.stringify(this.form.value));
   }
 }
