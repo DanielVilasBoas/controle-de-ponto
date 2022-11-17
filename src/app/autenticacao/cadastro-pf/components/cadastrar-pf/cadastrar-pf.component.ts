@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CpfValidator } from '../../../../shared/validators/cpf.validator';
 import { CnpjValidator } from '../../../../shared/validators/cnpj.validator';
 import { CadastroPf } from '../../models/cadastro-pf.model';
+import { CadastroPfService } from '../../services/cadastro-pf.service';
 
 @Component({
   selector: 'app-cadastrar-pf',
@@ -17,7 +18,8 @@ export class CadastrarPfComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private cadastroPfService: CadastroPfService
   ) { }
 
   ngOnInit(): void {
@@ -40,9 +42,21 @@ export class CadastrarPfComponent implements OnInit {
       return;
     }
     const cadastroPf: CadastroPf  = this.form.value;
-    alert(JSON.stringify(cadastroPf));
-
+    this.cadastroPfService.cadastrar(cadastroPf)
+    .subscribe(
+      data => {
+        const msg: string = "Realize o login para acessar o sistema.";
+        this.snackBar.open(msg, "Sucesso", { duration: 5000});
+        this.router.navigate(['/login']);
+      },
+      err => {
+        let msg: string = "Tente novamente em instantes.";
+        if(err.status == 400 ){
+          msg = err.error.errors.join(' ');
+        }
+        this.snackBar.open(msg, "Erro", { duration: 5000 });
+      }
+    );
     return false;
   }
-
 }

@@ -13,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CadastroPfService } from './services/cadastro-pf.service';
 
 
 @NgModule({
@@ -33,6 +34,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatSnackBarModule,
     SharedModule
+  ],
+  providers: [
+    CadastroPfService
   ]
 })
 export class CadastroPfModule { }
