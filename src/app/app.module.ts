@@ -1,3 +1,4 @@
+import { FuncionarioRoutingModule } from './funcionario/funcionario-routing.module';
 import { CadastroPfRoutingModule } from './autenticacao/cadastro-pf/cadastro-pf-routing.module';
 import { CadastroPjRoutingModule } from './autenticacao/cadastro-pj/cadastro-pj-routing.module';
 import { LoginRoutingModule } from './autenticacao/login/login-routing.module';
@@ -14,6 +15,7 @@ import { CadastroPjModule } from './autenticacao/cadastro-pj/cadastro-pj.module'
 import { CadastroPfModule } from './autenticacao/cadastro-pf/cadastro-pf.module';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FuncionarioModule } from './funcionario/funcionario.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CadastroPjRoutingModule,
     CadastroPfModule,
     CadastroPfRoutingModule,
+    FuncionarioModule,
+    FuncionarioRoutingModule,
 
     AppRoutingModule
   ],
