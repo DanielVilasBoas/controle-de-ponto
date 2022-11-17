@@ -5,13 +5,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
 import { LoginModule } from './autenticacao/login/login.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CadastroPjModule } from './autenticacao/cadastro-pj/cadastro-pj.module';
 import { CadastroPfModule } from './autenticacao/cadastro-pf/cadastro-pf.module';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { CadastroPfModule } from './autenticacao/cadastro-pf/cadastro-pf.module'
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    FlexLayoutModule,
     LoginModule,
     LoginRoutingModule,
     CadastroPjModule,
