@@ -20,6 +20,7 @@ import { HttpUtilService } from '../shared/services/http-util.service';
 import { LancamentoService } from '../shared/services/lancamento.service';
 import { PtBrMatPaginatorIntl } from '../shared/pt-br-mat-paginator-intl';
 import { SharedModule } from '../shared/shared.module';
+import { DataPipe } from '../shared/pipes/data.pipe';
 
 
 
