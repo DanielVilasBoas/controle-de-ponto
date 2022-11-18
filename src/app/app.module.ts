@@ -1,3 +1,4 @@
+import { AdminRoutingModule } from './admin/components/admin-routing.module';
 import { FuncionarioRoutingModule } from './funcionario/funcionario-routing.module';
 import { CadastroPfRoutingModule } from './autenticacao/cadastro-pf/cadastro-pf-routing.module';
 import { CadastroPjRoutingModule } from './autenticacao/cadastro-pj/cadastro-pj-routing.module';
@@ -37,6 +38,7 @@ import { AdminModule } from './admin/admin.module';
     FuncionarioModule,
     FuncionarioRoutingModule,
     AdminModule,
+    AdminRoutingModule,
 
     AppRoutingModule
   ],
