@@ -4,6 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Tipo } from '../../../shared/models/tipo.enum';
 
 import * as moment from 'moment';
+import { HttpUtilService } from '../../../shared/services/http-util.service';
+import { LancamentoService } from '../../../shared/services/lancamento.service';
+import { Lancamento } from '../../../shared/models/lancamento.model';
 
 declare var navigator: any;
 
@@ -21,7 +24,9 @@ export class LancamentoComponent implements OnInit {
 
   constructor(
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private httpUtil: HttpUtilService,
+    private lancamentoService: LancamentoService
   ) { }
 
   ngOnInit(): void {
@@ -57,12 +62,41 @@ export class LancamentoComponent implements OnInit {
   }
 
   obterUltimoLancamento() {
-    this.ultimoTipoLancado = '';
+    this.lancamentoService.buscarUltimoTipoLancado()
+    .subscribe(
+      data => {
+        this.ultimoTipoLancado = data.data ? data.data.tipo : '';
+      },
+      err => {
+        const msg: string = "Erro obtendo último lançamento.";
+        this.snackBar.open(msg, "Erro", { duration: 5000});
+      }
+    );
   }
 
   cadastrar(tipo: Tipo) {
-    alert(`Tipo: ${tipo}, dataAtualEn: ${this.dataAtualEn},
-    geolocation: ${this.geoLocation}`);
+    const lancamento: Lancamento = new Lancamento(
+      this.dataAtualEn,
+      tipo,
+      this.geoLocation,
+      this.httpUtil.obterIdUsuario()
+    );
+
+    this.lancamentoService.cadastrar(lancamento)
+    .subscribe(
+      data => {
+        const msg: string = "Lançamento realizado com sucesso!";
+        this.snackBar.open(msg, "Sucesso", {duration: 5000});
+        this.router.navigate(['/funcionario/listagem']);
+      },
+      err => {
+        let msg: string = "Tente novamente em instantes.";
+        if(err.status == 400) {
+          msg = err.error.errors.join(' ');
+        }
+        this.snackBar.open(msg, "Erro", {duration: 5000});
+      }
+    );
   }
 
   obterUrlMapa(): string {

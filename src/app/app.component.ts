@@ -22,4 +22,5 @@ export class AppComponent implements OnInit {
   autenticado(): boolean {
     return localStorage['token'];
   }
+
 }
