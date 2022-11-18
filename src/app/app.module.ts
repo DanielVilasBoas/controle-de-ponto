@@ -16,6 +16,7 @@ import { CadastroPfModule } from './autenticacao/cadastro-pf/cadastro-pf.module'
 import { MatIconModule } from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FuncionarioModule } from './funcionario/funcionario.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { FuncionarioModule } from './funcionario/funcionario.module';
     CadastroPfRoutingModule,
     FuncionarioModule,
     FuncionarioRoutingModule,
+    AdminModule,
 
     AppRoutingModule
   ],
