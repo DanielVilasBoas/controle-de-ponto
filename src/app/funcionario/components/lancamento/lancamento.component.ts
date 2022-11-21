@@ -30,8 +30,8 @@ export class LancamentoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dataAtual = moment().format('DD/MM/yyyy HH:mm:ss');
-    this.dataAtualEn = moment().format('yyyy-MM-DD HH:mm:ss');
+    this.dataAtual = moment().format('DD/MM/YYYY HH:mm:ss');
+    this.dataAtualEn = moment().format('YYYY-MM-DD HH:mm:ss');
     this.obterGeoLocation();
     this.ultimoTipoLancado = '';
     this.obterUltimoLancamento();

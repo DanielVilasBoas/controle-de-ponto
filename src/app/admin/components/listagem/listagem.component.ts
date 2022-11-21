@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Lancamento } from '../../../shared/models/lancamento.model';
 import { LancamentoService } from '../../../shared/services/lancamento.service';
 import { HttpUtilService } from '../../../shared/services/http-util.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { FuncionarioService } from '../../../shared/services/funcionario.service';
+import { MatSelect } from '@angular/material/select';
+import { Funcionario } from '../../../shared/models/funcionario.model';
 
 @Component({
   selector: 'app-listagem',
@@ -21,22 +23,32 @@ export class ListagemComponent implements OnInit {
   funcionarioId: string;
   totalLancamentos: number;
 
+  funcionarios: Funcionario[];
+  @ViewChild(MatSelect) matSelect: MatSelect;
+  form: FormGroup;
+
   private pagina: number;
   private ordem: string;
   private direcao: string;
 
   constructor(
-    private lancamentoService: LancamentoService,
+  	private lancamentoService: LancamentoService,
     private httpUtil: HttpUtilService,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private funcionarioService: FuncionarioService
-  ) { }
+    private funcionarioService: FuncionarioService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.pagina = 0;
     this.ordemPadrao();
-    this.exibirLancamentos();
+    this.obterFuncionarios();
+    this.gerarForm();
+  }
+
+  gerarForm() {
+    this.form = this.fb.group({
+      funcs: ['', []]
+    });
   }
 
   ordemPadrao() {
@@ -44,43 +56,73 @@ export class ListagemComponent implements OnInit {
     this.direcao = 'DESC';
   }
 
+  get funcId(): string {
+    return sessionStorage['funcionarioId'] || false;
+  }
+
+  obterFuncionarios() {
+    this.funcionarioService.listarFuncionariosPorEmpresa()
+      .subscribe(
+        data => {
+          const usuarioId: string = this.httpUtil.obterIdUsuario();
+          this.funcionarios = (data.data as Funcionario[])
+            .filter(func => func.id != usuarioId);
+
+          if (this.funcId) {
+            this.form.get('funcs').setValue(parseInt(this.funcId, 10));
+            this.exibirLancamentos();
+          }
+        },
+        err => {
+          const msg: string = "Erro obtendo funcionários.";
+          this.snackBar.open(msg, "Erro", { duration: 5000 });
+        }
+      );
+  }
+
   exibirLancamentos() {
-    this.funcionarioId = '3';
+    if (this.matSelect.selected) {
+      this.funcionarioId = this.matSelect.selected['value'];
+    } else if (this.funcId) {
+      this.funcionarioId = this.funcId;
+    } else {
+      return;
+    }
+    sessionStorage['funcionarioId'] = this.funcionarioId;
 
     this.lancamentoService.listarLancamentosPorFuncionario(
-      this.funcionarioId, this.pagina, this.ordem, this.direcao)
+        this.funcionarioId, this.pagina, this.ordem, this.direcao)
       .subscribe(
         data => {
           this.totalLancamentos = data['data'].totalElements;
           const lancamentos = data['data'].content as Lancamento[];
-          this.dataSource = new MatTableDataSource<Lancamento>(lancamentos)
+          this.dataSource = new MatTableDataSource<Lancamento>(lancamentos);
         },
         err => {
           const msg: string = "Erro obtendo lançamentos.";
           this.snackBar.open(msg, "Erro", { duration: 5000 });
         }
-      )
+      );
   }
 
   remover(lancamentoId: string) {
     alert(lancamentoId);
   }
 
-paginar(pageEvent: PageEvent) {
-  this.pagina = pageEvent.pageIndex;
-  this.exibirLancamentos();
-}
-
-ordenar(sort: Sort) {
-  if (sort.direction == '') {
-    this.ordemPadrao();
-  } else {
-    this.ordem = sort.active;
-    this.direcao = sort.direction.toUpperCase();
+  paginar(pageEvent: PageEvent) {
+    this.pagina = pageEvent.pageIndex;
+    this.exibirLancamentos();
   }
-  this.exibirLancamentos();
+
+  ordenar(sort: Sort) {
+    if (sort.direction == '') {
+      this.ordemPadrao();
+    } else {
+      this.ordem = sort.active;
+      this.direcao = sort.direction.toUpperCase();
+    }
+    this.exibirLancamentos();
+  }
+
 }
 
-
-
-}
