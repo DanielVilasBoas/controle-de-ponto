@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Lancamento } from '../../../shared/models/lancamento.model';
 import { LancamentoService } from '../../../shared/services/lancamento.service';
@@ -10,6 +10,10 @@ import { Sort } from '@angular/material/sort';
 import { FuncionarioService } from '../../../shared/services/funcionario.service';
 import { MatSelect } from '@angular/material/select';
 import { Funcionario } from '../../../shared/models/funcionario.model';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TitleStrategy } from '@angular/router';
 
 @Component({
   selector: 'app-listagem',
@@ -36,7 +40,9 @@ export class ListagemComponent implements OnInit {
     private httpUtil: HttpUtilService,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private funcionarioService: FuncionarioService) { }
+    private funcionarioService: FuncionarioService,
+    private dialog: MatDialog
+    ) { }
 
   ngOnInit() {
     this.pagina = 0;
@@ -106,7 +112,30 @@ export class ListagemComponent implements OnInit {
   }
 
   remover(lancamentoId: string) {
-    alert(lancamentoId);
+    this.lancamentoService.remover(lancamentoId)
+    .subscribe(
+      data => {
+        const msg: string = "Lançamento removido com sucesso!";
+        this.snackBar.open(msg, "sucesso", { duration: 5000 });
+        this.exibirLancamentos();
+      },
+      err => {
+        let msg: string = "Tente novamente em instantes.";
+        if (err.status == 400) {
+          msg = err.error.errors.join(' ');
+        }
+        this.snackBar.open(msg, "Erro", { duration: 5000 });
+      }
+    )
+  }
+
+  removerDialog(lancamentoId: string) {
+    const dialog = this.dialog.open(ConfirmarDialog, {});
+    dialog.afterClosed().subscribe(remover => {
+      if (remover) {
+        this.remover(lancamentoId);
+      }
+    })
   }
 
   paginar(pageEvent: PageEvent) {
@@ -126,3 +155,20 @@ export class ListagemComponent implements OnInit {
 
 }
 
+@Component({
+  selector: 'confirmar-dialog',
+  template: `
+  <h1 mat-dialog-title>Deseja realmente remover o lançamento?</h1>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false" tabindex="-1">
+      Não
+    </button>
+    <button mat-button [mat-dialog-close]="true" tabindex="2">
+      Sim
+    </button>
+  </div>
+  `,
+})
+export class ConfirmarDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+}

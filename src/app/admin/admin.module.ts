@@ -2,7 +2,7 @@ import { SharedModule } from './../shared/shared.module';
 import { MatSortModule } from '@angular/material/sort';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListagemComponent } from './components/listagem/listagem.component';
+import { ListagemComponent, ConfirmarDialog } from './components/listagem/listagem.component';
 import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { AtualizacaoComponent } from './components/atualizacao/atualizacao.component';
 import { RouterModule } from '@angular/router';
@@ -33,7 +33,8 @@ import { FuncionarioService } from '../shared/services/funcionario.service';
     ListagemComponent,
     CadastroComponent,
     AtualizacaoComponent,
-    AdminComponent
+    AdminComponent,
+    ConfirmarDialog
   ],
   imports: [
     CommonModule,
@@ -65,5 +66,6 @@ import { FuncionarioService } from '../shared/services/funcionario.service';
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     { provide: MatPaginatorIntl, useClass: PtBrMatPaginatorIntl }
   ],
+  entryComponents: [ ConfirmarDialog ]
 })
 export class AdminModule { }

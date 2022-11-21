@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpUtilService } from './http-util.service';
 import { HttpClient } from '@angular/common/http';
+import { Lancamento } from '../models/lancamento.model';
 
 @Injectable({
   providedIn: 'root'
