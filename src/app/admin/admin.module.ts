@@ -25,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LancamentoService } from '../shared/services/lancamento.service';
 import { HttpUtilService } from '../shared/services/http-util.service';
 import { PtBrMatPaginatorIntl } from '../shared/pt-br-mat-paginator-intl';
+import { FuncionarioService } from '../shared/services/funcionario.service';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { PtBrMatPaginatorIntl } from '../shared/pt-br-mat-paginator-intl';
     LancamentoService,
     HttpUtilService,
     MatPaginatorIntl,
+    FuncionarioService,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     { provide: MatPaginatorIntl, useClass: PtBrMatPaginatorIntl }
   ],

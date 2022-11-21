@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
+import { FuncionarioService } from '../../../shared/services/funcionario.service';
 
 @Component({
   selector: 'app-listagem',
@@ -28,7 +29,8 @@ export class ListagemComponent implements OnInit {
     private lancamentoService: LancamentoService,
     private httpUtil: HttpUtilService,
     private snackBar: MatSnackBar,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private funcionarioService: FuncionarioService
   ) { }
 
   ngOnInit(): void {
