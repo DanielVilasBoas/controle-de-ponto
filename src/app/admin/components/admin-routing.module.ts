@@ -4,11 +4,13 @@ import { ListagemComponent } from './listagem/listagem.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { AtualizacaoComponent } from './atualizacao/atualizacao.component';
 import { NgModule } from '@angular/core';
+import { AdminGuard } from './services/admin-guard-services';
 
 export const AdminRoutes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [ AdminGuard ],
     children: [
       {
         path: '',
